@@ -1,0 +1,47 @@
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Linq;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
+using DeStateParks.Models;
+
+namespace DeStateParks.Controllers
+{
+    public class SomeController : Controller
+    {
+        private xxxxxxxxxx db = new xxxxxxxxxxx();
+
+        // GET: Trails
+        public ActionResult Index()
+        {
+            return View(db.Things.ToList());
+        }
+
+        public ActionResult ThingsChallenge(string sortOrder)
+        {
+            ViewBag.ParkSortParm = String.IsNullOrEmpty(sortOrder) ? "park_desc" : "";
+            ViewBag.AccessibilitySortParm = String.IsNullOrEmpty(sortOrder) ? "accessibility_desc" : "Accessibile";
+            var things = from s in db.Things
+                           select s;
+            switch (sortOrder)
+            {
+                case "park_desc":
+                    things = things.OrderByDescending(s => s.Park);
+                    break;
+                case "Accessibile":
+                    things = things.OrderBy(s => s.Accessibile);
+                    break;
+                case "accessibility_desc":
+                    things = things.OrderByDescending(s => s.Accessibile);
+                    break;
+                default:
+                    things = things.OrderBy(s => s.Park);
+                    break;
+            }
+            return View(db.Things.ToList());
+        }
+    }
+}
