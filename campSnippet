@@ -1,0 +1,39 @@
+<div id="parkMap" class="col-lg-12">
+
+    @foreach (var item in Model.OrderBy(i => i.Date).ThenBy(n => n.Park))
+    {
+        if (item.Date.HasValue && item.Date >= DateTime.Today && item.Category == "CAMP")
+        {
+            <div class="Row" data-region="@Html.DisplayFor(modelItem => item.Region)" data-category="@Html.DisplayFor(modelItem => item.Park),ALL">
+
+                <div class="col-sm-2" style="padding-top:25px;">
+                    <h4>@item.Date.Value.ToString("dddd"), </h4>
+                    <h4>@item.Date.Value.ToString("MMMM dd"), </h4>
+                    <h4>@Html.DisplayFor(modelItem => item.Time)</h4>
+                </div>
+                <div class="col-sm-9">
+                    <h3>@Html.DisplayFor(modelItem => item.Program)</h3>
+                    <p> <strong>@Html.DisplayFor(modelItem => item.Park)</strong></p>
+                    <p>@Html.DisplayFor(modelItem => item.Description)</p>
+                    <p>
+                        <span class="addtocalendar atc-style-button-icon atc-style-menu-wb">
+                            <a class="atcb-link">
+                                <img src="~/wwwroot/images/calendarBLUE32x32.png" alt="Add to Calendar" width="32" title="Add @Html.DisplayFor(modelItem => item.Program) to Calendar">
+                            </a>
+                            <var class="atc_event">
+                                <var class="atc_date_start">@Html.DisplayFor(modelItem => item.FormattedTime)</var>
+                                <var class="atc_date_end">@Html.DisplayFor(modelItem => item.FormattedTime)</var>
+                                <var class="atc_timezone">America/New_York</var>
+                                <var class="atc_title">@Html.DisplayFor(modelItem => item.Program)</var>
+                                <var class="atc_description">@Html.DisplayFor(modelItem => item.Description)</var>
+                                <var class="atc_location">@Html.DisplayFor(modelItem => item.Park)</var>
+                                <var class="atc_organizer"></var>
+                                <var class="atc_organizer_email"></var>
+                            </var>
+                        </span>
+                    </p>
+                </div>
+            </div><!--Row-->
+        }
+    }
+</div>
