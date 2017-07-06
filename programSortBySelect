@@ -1,0 +1,155 @@
+@model IEnumerable<DeStateParks.Models.Program>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+<link href="~/wwwroot/css/atc-style-button-icon.css" rel="stylesheet" />
+<link href="~/wwwroot/css/atc-style-menu-wb.css" rel="stylesheet" />
+
+<script src="https://code.jquery.com/jquery-2.2.4.js"
+        integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+        (function () {
+            if (window.addtocalendar) if (typeof window.addtocalendar.start == "function") return;
+            if (window.ifaddtocalendar == undefined) {
+                window.ifaddtocalendar = 1;
+                var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
+                s.type = 'text/javascript'; s.charset = 'UTF-8'; s.async = true;
+                s.src = ('https:' == window.location.protocol ? 'https' : 'http') + '://addtocalendar.com/atc/1.5/atc.min.js';
+                var h = d[g]('body')[0]; h.appendChild(s);
+            }
+        })();
+</script>
+
+<script type="text/javascript" src="~/wwwroot/js/sort.js">
+       
+
+<div id="mainPic">
+    <img src="~/wwwroot/images/Seining-CROPPED.JPG" class="img-responsive" alt="Picture of group seining">
+    <h1 id="mainPic">Programs</h1>
+</div>
+
+<div class="clearfix"></div><br />
+
+<section id="page" class="flexbox-container">
+    <div id="main">
+        <form class="col-sm-12">
+
+            <h1>Find Things To Do</h1>
+
+            <div class="form-group ">
+                <label for="region">Choose a Region</label>
+                <select class="form-control ddlFilterTableRow" id="ddlRegion" data-attribute="region">
+                    <option value="NORTH">North</option>
+                    <option value="CENTRAL">Central</option>
+                    <option value="SOUTH">South</option>
+                </select>
+            </div>
+
+            <div class="form-group ">
+                <label for="category">Select a Category</label>
+                <select class="form-control ddlFilterTableRow" id="ddlCategory" data-attribute="category">
+                    <option value="ALL">All</option>
+                    <option value="ART">Arts & Crafts</option>
+                    <option value="ARCH">Archeology</option>
+                    <option value="BIRD">Birdwatching</option>
+                    <option value="CFP">Campfire Program</option>
+                    <option value="MUSIC">Concerts and Performances</option>
+                    <option value="CAMP">Day Camp</option>
+                    <option value="DOF">Delaware Outdoor Family Programs</option>
+                    <option value="DARK">Evening Programs</option>
+                    <option value="EXER">Exercise & Sports</option>
+                    <option value="FISH">Fishing</option>
+                    <option value="GHOST">Ghost/Paranormal Tours</option>
+                    <option value="HAYRIDE">Hayrides</option>
+                    <option value="HIKE">Hikes</option>
+                    <option value="HIST">History</option>
+                    <option value="HDAY">Holiday & Seasonal Programs</option>
+                    <option value="PDLE">Kayaking & Canoeing</option>
+                    <option value="NATV">Native American Programs</option>
+                    <option value="NAPR">Nature Programs</option>
+                    <option value="ORTR">Orienteering</option>
+                    <option value="PHOTO">Photography</option>
+                    <option value="ROCK">Rock-Climbing</option>
+                    <option value="SPEV">Special Events & Festivals</option>
+                    <option value="STAR">Star-Gazing</option>
+                    <option value="STORY">Story Time</option>
+                    <option value="OSW">Survival/Wilderness Programs</option>
+                    <option value="TOUR">Tours</option>
+                    <option value="VLTR">Volunteer</option>
+                </select>
+            </div>
+
+        </form>
+        <!--start table-->
+        
+            <div id="parkMap" class="col-lg-12">
+                
+                    @foreach (var item in Model.OrderBy(i => i.Date).ThenBy(n => n.Park))
+                    {
+                        if (item.Date.HasValue && item.Date >= DateTime.Today)
+                        {
+                            <div class="Row" data-region="@Html.DisplayFor(modelItem => item.Region)" data-category="@Html.DisplayFor(modelItem => item.Category),ALL" >
+                                
+                                <div class="col-sm-2" style="padding-top:25px;">
+                                    <h4>@item.Date.Value.ToString("dddd"), </h4>
+                                    <h4>@item.Date.Value.ToString("MMMM dd"), </h4>
+                                    <h4>@Html.DisplayFor(modelItem => item.Time)</h4>
+                                </div>
+                                <div class="col-sm-9">
+                                    <h3>@Html.DisplayFor(modelItem => item.Program)</h3>
+                                    <p> <strong>@Html.DisplayFor(modelItem => item.Park)</strong></p>
+                                    <p>@Html.DisplayFor(modelItem => item.Description)</p>
+                                    <p>
+                                        <span class="addtocalendar atc-style-button-icon atc-style-menu-wb">
+                                            <a class="atcb-link">
+                                                <img src="~/wwwroot/images/calendarBLUE32x32.png" alt="Add to Calendar" width="32" title="Add @Html.DisplayFor(modelItem => item.Program) to Calendar">
+                                            </a>
+                                            <var class="atc_event">
+                                                <var class="atc_date_start">@Html.DisplayFor(modelItem => item.FormattedTime)</var>
+                                                <var class="atc_date_end">@Html.DisplayFor(modelItem => item.FormattedTime)</var>
+                                                <var class="atc_timezone">America/New_York</var>
+                                                <var class="atc_title">@Html.DisplayFor(modelItem => item.Program)</var>
+                                                <var class="atc_description">@Html.DisplayFor(modelItem => item.Description)</var>
+                                                <var class="atc_location">@Html.DisplayFor(modelItem => item.Park)</var>
+                                                <var class="atc_organizer"></var>
+                                                <var class="atc_organizer_email"></var>
+                                            </var>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div><!--Row-->
+                        }
+                    }
+
+                
+            </div>
+        
+        <!--end table-->
+
+    </div><!--main-->
+    <!-- BEGIN Sidebar -->
+    <aside class="sidebar">
+        <div class="side">
+            <br />
+
+            <div class="embed-responsive embed-responsive-item">
+                <iframe style="border: 1px solid #777;" src="https://indd.adobe.com/embed/64ea3014-cddc-48f5-8dcd-77e4e3cbc2ef?startpage=1&allowFullscreen=true" width="250px" height="250px" align="middle" frameborder="0" allowfullscreen=""></iframe>
+            </div>
+            
+                Did you recently participate in a park program?
+            </h3>
+            <h3>
+                <a href="http://www.surveygizmo.com/s3/1608300/park-programs">Let us know how we did</a>!
+            </h3>
+
+
+        </div><!--side-->
+    </aside><!--sidebar-->
+
+</section>
